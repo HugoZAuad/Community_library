@@ -15,7 +15,7 @@ const users = [];
 
 //NAME - / - SEMPRE NO PLURAL
 
-//CALLBACK FUNCTION - (req, res) => ONDE EXCECUTAMOS O BACKEND (LOGICA, REGRAS DE NEGOCIO)
+//CALLBACK FUNCTION - (req, res) => ONDE EXCECUTAMOS O BACKEND (LOGICA E REGRAS DE NEGOCIO)
 
 app.post("/users", (req, res) => {
   const body = req.body;
