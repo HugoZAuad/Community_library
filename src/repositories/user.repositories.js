@@ -91,21 +91,45 @@ function findAllUserRepository() {
 function updateUserRepository(id, user) {
   return new Promise((resolve, reject) => {
     const { username, email, password, avatar } = user;
+    const fields = ['username', 'email', 'password', 'avatar'];
+    let query = "UPDATE users SET"
+    const values = [];
+
+    fields.forEach((field) => {
+      if (user[field] !== undefined) {
+        query += ` ${field} = ?,`;
+        values.push(user[field]);
+      }
+    })
+
+    query = query.slice(0, -1);
+
+    query += " WHERE id = ?";
+    values.push(id);
+
+    db.run(query, values, (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({ ...user, id });
+      }
+    });
+  });
+}
+
+async function deleteUserRepository(id) {
+  return new Promise((resolve, reject) => {
     db.run(
       `
-            UPDATE users SET
-              username = ?,
-              email = ?,
-              password = ?,
-              avatar = ?
+            DELETE FROM users
             WHERE id = ?
-      `,
-      [username, email, password, avatar, id],
+    `,
+      [id],
       (err) => {
         if (err) {
           reject(err);
         } else {
-          resolve({ id, ...user });
+          resolve({ message: "User deleted successfully", id });
         }
       }
     );
@@ -118,4 +142,5 @@ export default {
   finderUserByidRepository,
   findAllUserRepository,
   updateUserRepository,
+  deleteUserRepository
 };

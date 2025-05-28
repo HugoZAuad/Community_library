@@ -1,10 +1,11 @@
+import userRepositories from "../repositories/user.repositories.js";
 import userRepository from "../repositories/user.repositories.js";
 import bcrypt from "bcrypt";
 
 async function createUserService(newUser) {
     const foundUser = await userRepository.finderUserByEmailRepository(newUser.email);
     if (foundUser)
-        throw new Error("User already exists");
+        throw new Error("User already exists, please try another email");
 
         const passHash = await bcrypt.hash(newUser.password, 10);
         const user = await userRepository.createUserRepository({
@@ -39,9 +40,18 @@ async function updateUserService(newUser, userId) {
     return userUpdated;
 }
 
+async function deleteUserService(userId) {
+    const user = await userRepository.finderUserByidRepository(userId);
+    if(!user) throw new Error("User not found");
+    await userRepositories.deleteUserRepository(userId);
+    return { message: "User deleted successfully" };
+}
+
+
 export default {
     createUserService,
     findAllUsersService,
     findUserByIdService,
-    updateUserService
+    updateUserService,
+    deleteUserService
 }
