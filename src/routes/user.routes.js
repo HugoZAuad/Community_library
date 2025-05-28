@@ -1,8 +1,18 @@
 import { Router } from "express";
 import userController from "../controller/user.controllers.js";
+import { validate } from "../middleware/validation.middlewares.js";
+import { userSchema } from "../schema/user.schema.js";
 
 const router = Router();
 
-router.post("/users", userController.createUserController); 
+router.post(
+  "/users",
+  validate(userSchema),
+  userController.createUserController
+);
+
+router.get("/users", userController.findAllUsersController);
+router.get("/users/:id", userController.findUserByIdController);
+router.put("/users/:id", validate(userSchema), userController.updateUserController);
 
 export default router;
