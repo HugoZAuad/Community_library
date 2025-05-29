@@ -15,10 +15,7 @@ async function createUserService(newUser) {
     });
     if (!user)
         throw new Error("Error creating user");
-    const userByEmail = await userRepository.finderUserByEmailRepository(newUser.email);
-    console.log(userByEmail);
-    console.log(userByEmail.id)
-    const token = generateJWT(userByEmail.id)
+    const token = generateJWT(user.id);
     return token;
 }
 
