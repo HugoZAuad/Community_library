@@ -92,7 +92,7 @@ function updateUserRepository(id, user) {
   return new Promise((resolve, reject) => {
     const { username, email, password, avatar } = user;
     const fields = ['username', 'email', 'password', 'avatar'];
-    let query = "UPDATE users SET"
+    let query = "UPDATE users SET "
     const values = [];
 
     fields.forEach((field) => {
