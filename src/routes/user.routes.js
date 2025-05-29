@@ -1,22 +1,21 @@
 import { Router } from "express";
 import userController from "../controller/user.controllers.js";
-import { validate, validateUserId } from "../middleware/validation.middlewares.js";
+import {
+  validate,
+  validateUserId,
+} from "../middleware/validation.middlewares.js";
 import { userSchema } from "../schema/user.schema.js";
-import  authMiddleware  from "../middleware/auth.middleware.js";
+import authMiddleware from "../middleware/auth.middleware.js";
 
 const router = Router();
 
-router.post(
-  "/users",
-  validate(userSchema),
-  userController.createUserController
-);
-router.post("/users/login", userController.loginUserController);
+router.post("/", validate(userSchema), userController.createUserController);
+router.post("//login", userController.loginUserController);
 
 router.use(authMiddleware);
-router.get("/users", userController.findAllUsersController);
-router.get("/users/:id", validateUserId, userController.findUserByIdController);
-router.patch("/users/:id", userController.updateUserController);
-router.delete("/users/:id", validateUserId, userController.deletedUserController);
+router.get("/", userController.findAllUsersController);
+router.get("/:id", validateUserId, userController.findUserByIdController);
+router.patch("/:id", userController.updateUserController);
+router.delete("/:id", validateUserId, userController.deletedUserController);
 
 export default router;

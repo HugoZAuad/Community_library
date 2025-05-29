@@ -30,13 +30,25 @@ function createLoanRepository(userId, bookId, dueDate) {
 
 function findAllLoansRepository() {
   return new Promise((resolve, reject) => {
-    db.all(`SELECT * FROM loans`, [], (err, rows) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(rows);
+    db.all(
+      `SELECT
+        loans.id,
+        loans.dueDate,
+        users.email,
+        books.title
+      FROM loans 
+      JOIN users on loans.userId = users.id
+      JOIN books on loans.bookId = books.id
+      `,
+      [],
+      (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(rows);
+        }
       }
-    });
+    );
   });
 }
 
@@ -68,5 +80,5 @@ export default {
   createLoanRepository,
   findAllLoansRepository,
   findLoanByIdRepository,
-  deleteLoanRepository
+  deleteLoanRepository,
 };
